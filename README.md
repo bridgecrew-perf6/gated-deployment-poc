@@ -1,2 +1,4 @@
 # gated-deployment-poc
-Gated GitHub Actions deployment demo
+GitHub Actions gated deployment proof of concept
+
+This is a work in progress.
