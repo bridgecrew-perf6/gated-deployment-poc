@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: cicd-develop
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+    
+  # Run workflow manually if required
+  workflow_dispatch:
+    
+defaults:
+  run:
+    shell: bash
+    working-directory: ./src
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Makes source code accessible via $github.workspace
+      - name: 'Check out source code'
+        uses: actions/checkout@v2
+        
+      - name: 'Install node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: 'Fetch dependencies'
+        run: npm ci
+
+      - name: 'Build'
+        run: npm run build
+
+      - name: 'Test'
+        run: npm test -- --watch=false --browsers=ChromeHeadless
