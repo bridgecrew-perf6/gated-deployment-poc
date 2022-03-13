@@ -1,0 +1,62 @@
+name: deploy-dev
+
+on:
+  workflow_run:
+    workflows: ["run-tests"]
+    branches: ["develop"]
+    types:
+      - completed
+
+env:
+  ANGULAR_DIST_LOCATION: '${{ github.workspace }}/src/dist/hello-world/'
+    
+defaults:
+  run:
+    shell: bash
+    working-directory: ./src
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      # Makes source code accessible via $github.workspace
+      - name: 'Check out source code'
+        uses: actions/checkout@v2
+        
+      - name: 'Install node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: 'Fetch dependencies'
+        run: npm ci
+
+      - name: 'Build'
+        run: npm run build --configuration=production
+
+      # Authentication
+      # Set up the following secrets in your repository: AZURE_CREDENTIALS
+      # For details see https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure
+      - name: 'Login to Azure'
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload to blob storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+              az storage blob upload-batch \
+              --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} \
+              --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+              --source ${{ env.ANGULAR_DIST_LOCATION }} \
+              --destination '$web' \
+              --auth-mode key \
+
+      - name: 'Logout from Azure'
+        run: |
+              az logout
+        if: always()
