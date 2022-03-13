@@ -2,9 +2,11 @@ name: run-tests
 
 on:
   push:
-    branches: [ develop ]
+    branches: 
+      - '**'
   pull_request:
-    branches: [ develop ]
+    branches:
+      - '**'
     
   # Run workflow manually if required
   workflow_dispatch:
