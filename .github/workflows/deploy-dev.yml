@@ -7,6 +7,9 @@ on:
     types:
       - completed
 
+  # Run workflow manually if required
+  workflow_dispatch:
+
 env:
   ANGULAR_DIST_LOCATION: '${{ github.workspace }}/src/dist/hello-world/'
     
