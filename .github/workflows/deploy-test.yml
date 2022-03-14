@@ -15,8 +15,9 @@ defaults:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: development
+    environment: test
 
+    if: github.ref == 'refs/heads/develop'
     steps:
       # Makes source code accessible via $github.workspace
       - name: 'Check out source code'
