@@ -47,15 +47,27 @@ jobs:
         with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Upload to blob storage
-        uses: azure/CLI@v1
+      - name: Deploy Static Web App
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          inlineScript: |
-              az storage blob upload-batch \
-              --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
-              --source ${{ env.ANGULAR_DIST_LOCATION }} \
-              --destination '$web' \
-              --auth-mode key \
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_DEPLOY_KEY }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations
+          action: 'upload'
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: '${{ env.ANGULAR_DIST_LOCATION }}' # App source code path
+          ###### End of Repository/Build Configurations ######
+
+      # - name: Upload to blob storage
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #         az storage blob upload-batch \
+      #         --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+      #         --source ${{ env.ANGULAR_DIST_LOCATION }} \
+      #         --destination '$web' \
+      #         --auth-mode key \
+      #         --overwrite true \
 
       - name: 'Logout from Azure'
         run: |
