@@ -1,12 +1,7 @@
-name: deploy-dev
+name: deploy-test
 
 on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
-
-  # Run workflow manually if required
+  # Run workflow manually only
   workflow_dispatch:
 
 env:
@@ -37,7 +32,7 @@ jobs:
 
       - name: 'Build'
         run: npm run build --configuration=production
-
+        
       - name: 'Test'
         run: npm test -- --watch=false --browsers=ChromeHeadless
 
