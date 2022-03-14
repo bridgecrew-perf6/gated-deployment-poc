@@ -52,7 +52,6 @@ jobs:
         with:
           inlineScript: |
               az storage blob upload-batch \
-              --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} \
               --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
               --source ${{ env.ANGULAR_DIST_LOCATION }} \
               --destination '$web' \
