@@ -8,7 +8,7 @@ env:
   ANGULAR_DIST_LOCATION: '${{ github.workspace }}/src/dist/hello-world/'
     
 defaults:
-  run:S
+  run:
     shell: bash
     working-directory: ./src
 
