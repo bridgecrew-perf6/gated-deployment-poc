@@ -1,7 +1,12 @@
 # gated-deployment-poc
-GitHub Actions gated deployment proof of concept.
+Proof of concept to demonstrate a simple CI-CD deployment pipeline to deploy an Angular web application to 3x Azure Static Web App environments (i.e. development, test and production).
 
 *** Work in progress ***
+
+## Branching Strategy
+Utilises a simple branching model involving:
+* develop - Contains active development that has not yet been released to the production environment.
+* main - Contains code already / to be deployed to the production environment.
 
 ## GitHub Actions Workflows
 | Workflow | Trigger | Action Performed |
@@ -10,7 +15,7 @@ GitHub Actions gated deployment proof of concept.
 | ```.github\workflows\deploy-test.yml```  | Manually triggered | Builds code, runs tests and then deploys to the Test environment <br/><br/> Note: workflow will only execute against the ```develop``` branch |
 | ```.github\workflows\deploy-prod.yml```  | Manually triggered | Builds code, runs tests and then deploys to the Production environment. <br/><br/> Note: workflow will only execute against the ```main``` branch |
 
-## Setup
+## Project Setup
 1. Create following 'GitHub Environments' via the Project Settings page.
     * production
     * test
