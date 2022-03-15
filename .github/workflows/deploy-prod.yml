@@ -1,0 +1,59 @@
+name: deploy-prod
+
+on:
+  # Run workflow manually only
+  workflow_dispatch:
+
+env:
+  ANGULAR_DIST_LOCATION: '${{ github.workspace }}/src/dist/hello-world/'
+    
+defaults:
+  run:S
+    shell: bash
+    working-directory: ./src
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    if: github.ref == 'refs/heads/main'
+    steps:
+      # Makes source code accessible via $github.workspace
+      - name: 'Check out source code'
+        uses: actions/checkout@v2
+        
+      - name: 'Install node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: 'Fetch dependencies'
+        run: npm ci
+
+      - name: 'Build'
+        run: npm run build --configuration=production
+        
+      - name: 'Test'
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+      # Authentication
+      # Set up the following secrets in your repository: AZURE_CREDENTIALS
+      # For details see https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure
+      - name: 'Login to Azure'
+        uses: azure/login@v1
+        with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_DEPLOY_KEY }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integration
+          action: 'upload'
+          app_location: '${{ env.ANGULAR_DIST_LOCATION }}' # App source code path
+
+      - name: 'Logout from Azure'
+        run: |
+              az logout
+        if: always()
