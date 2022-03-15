@@ -1,7 +1,14 @@
 # gated-deployment-poc
-GitHub Actions gated deployment proof of concept
+GitHub Actions gated deployment proof of concept.
 
-This is a work in progress.
+*** Work in progress ***
+
+## GitHub Actions Workflows
+| Workflow | Trigger | Action Performed |
+| ------------- | ------------- | ------------- |
+| ```.github\workflows\deploy-dev.yml```  | On Push to the '```develop```' branch | Builds code, runs tests and then deploys to the Development environment |
+| ```.github\workflows\deploy-test.yml```  | Manually triggered | Builds code, runs tests and then deploys to the Test environment <br/><br/> Note: workflow will only execute against the ```develop``` branch |
+| ```.github\workflows\deploy-prod.yml```  | Manually triggered | Builds code, runs tests and then deploys to the Production environment. <br/><br/> Note: workflow will only execute against the ```main``` branch |
 
 ## Setup
 1. Create following 'GitHub Environments' via the Project Settings page.
