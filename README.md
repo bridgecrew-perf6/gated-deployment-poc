@@ -1,12 +1,23 @@
 # gated-deployment-poc
 Proof of concept to demonstrate a simple CI-CD deployment pipeline to deploy an Angular web application to 3x Azure Static Web App environments (i.e. development, test and production).
 
-*** Work in progress ***
+*** This project is still a work in progress ***
+<br/><br/>
+
+## Environments
+| Name | URL |
+| ------------- | ------------- |
+| Development  | https://salmon-glacier-07a38f700.1.azurestaticapps.net/ |
+| Test / UAT  | https://zealous-pebble-0ac38c600.1.azurestaticapps.net/ |
+| Production  | https://nice-river-0eaf48d00.1.azurestaticapps.net/ |
+
+<br/>
 
 ## Branching Strategy
 Utilises a simple branching model involving:
-* develop - Contains active development that has not yet been released to the production environment.
-* main - Contains code already / to be deployed to the production environment.
+* ```develop``` - Contains active development that has not yet been released to the production environment.
+* ```main``` - Contains code already / to be deployed to the production environment.
+<br/><br/>
 
 ## GitHub Actions Workflows
 | Workflow | Trigger | Action Performed |
@@ -17,9 +28,9 @@ Utilises a simple branching model involving:
 
 ## Project Setup
 1. Create following 'GitHub Environments' via the Project Settings page.
-    * production
-    * test
     * development
+    * test
+    * production
 <br/><br/>
 2. Run the below command in the Azure Portal Cloud Shell to create the Azure app registration used for github actions deployment
     ```
